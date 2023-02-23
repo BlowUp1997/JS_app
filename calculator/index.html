@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>계산기</title>
+    <style>
+        #calculator {
+            position:relative;
+            max-width: 400px;
+
+            justify-content:space-between;
+            align-items:flex-start;
+
+            background: #2C2C2C;
+            border-radius: 3px;
+        }
+        .nums {
+            width: 80px;
+            height: 50px;
+
+            margin: 7px;
+
+            background: #3B3B3B;
+            color: white;
+            border-radius: 5px;
+        }
+        .nums:hover{
+            background: #323232;
+        }
+        .option {
+            width: 80px;
+            height: 50px;
+
+            margin: 7px;
+
+            background: #3B3B3B;
+            color: white;
+            border-radius: 5px;
+        }
+        .option:hover {
+            background: #323232;
+        }
+        .op{
+            width: 80px;
+            height: 50px;
+
+            margin: 7px;
+
+            background: #323232;
+            color: white;
+            border-radius: 5px;
+        }
+        .op:hover{
+            background: #3B3B3B;
+        }
+        #make_result{
+            width: 80px;
+            height: 50px;
+            margin: 7px;
+
+            background: #4CC2FF;
+            border-radius: 5px;
+        }
+        #results{
+            width: 380px;
+            height: 30px;
+            padding-top: 25px;
+
+            display: flex;
+            justify-content: end;
+            align-items: center;
+
+            color: white;
+            font-size: 40px;
+        }
+        #middle-result{
+            width: 380px;
+            height: 50px;
+
+            display: flex;
+            justify-content: end;
+            align-items: center;
+
+            color: gray;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <div id="middle-result"></div>
+        <div id="results"></div>;
+        <div>
+            <button class="option" id="clear_entry">CE</button>
+            <button class="option" id="clear_all">C</button>
+            <button class="option" id="delete_word"><=X</button>
+            <button class="option" id="plus">+</button>
+        </div>
+        <div>
+            <button class="nums">7</button>
+            <button class="nums">8</button>
+            <button class="nums">9</button>
+            <button class="op" id="minus">-</button>
+        </div>
+        <div>
+            <button class="nums">4</button>
+            <button class="nums">5</button>
+            <button class="nums">6</button>
+            <button class="op" id="divide">/</button>
+        </div>
+        <div>
+            <button class="nums">1</button>
+            <button class="nums">2</button>
+            <button class="nums">3</button>
+            <button class="op" id="multiple">*</button>
+        </div>
+        <div>
+            <button class="option" id="change_state">+/-</button>
+            <button class="nums">0</button>
+            <button class="option" id="float">.</button>
+            <button id="make_result">=</button>
+        </div>
+    </div>
+
+<script>
+    const $calculator = document.getElementById("calculator")
+    const $middleResult = document.getElementById("middle-result")
+    const $result = document.getElementById("results")
+
+    let prevNum = "";
+    let curNum = "";
+    let operator = "";
+    let result = "";
+
+    if(result){
+
+    }
+
+    $calculator.addEventListener('click', (e)=>{
+        // 숫자 버튼 클릭
+        if(e.target.classList.contains('nums')){
+            clickNum(e);
+        }
+
+        // 연산자 버튼 클릭
+        if(e.target.classList.contains('op')){
+            clickOp(e.target.textContent);
+        }
+
+        // = 버튼 클릭
+        if(e.target.id === 'make_result'){
+            showResult();
+        }
+
+        // C 눌렀을 때
+        if(e.target.id === "clear_all") {
+            clear_data();
+            return;
+        }
+
+        if(e.target.id === "change_state"){
+            change_sign();
+        }
+    })
+
+    const clickNum = (e) => {
+        //첫 숫자 입력할 때
+        if(!operator) {
+            prevNum += e.target.textContent;
+            $result.textContent += e.target.textContent;
+            return;
+        }
+
+        // 다음 숫자 입력할 때
+        if(!curNum){
+            $middleResult.textContent = prevNum;
+            $result.textContent = ''
+        }
+
+        if(result){
+            $result.textContent = ''
+        }
+        curNum += e.target.textContent;
+        $result.textContent += e.target.text;
+    }
+    const clickOp = (op) => {
+        if(prevNum){
+            operator = op
+        } else {
+            alert('연산할 숫자가 없습니다')
+        }
+    }
+
+    const showResult = () => {
+        if(curNum){
+            switch (operator){
+                case '+':
+                    $result.textContent = String(parseInt(prevNum) + parseInt(curNum));
+                    result = $result.value;
+                    break;
+                case '-':
+                    $result.textContent = String(Number(prevNum) - Number(curNum));
+                    result = $result.value;
+                    break;
+                case '*':
+                    $result.textContent = String(Number(prevNum) * Number(curNum));
+                    result = $result.value;
+                    break;
+                case '/':
+                    $result.textContent = String(Number(prevNum) / Number(curNum));
+                    result = $result.value;
+                    break;
+                default:
+                    break;
+            }
+        } else alert('연산이 불가능합니다')
+        prevNum = "";
+        curNum = "";
+        operator = "";
+    }
+
+    const clear_data = () => {
+        prevNum = '';
+        curNum = '';
+        operator = '';
+        result = '';
+    }
+
+    const change_sign = () => {
+        curNum *= -1;
+    }
+
+</script>
+</body>

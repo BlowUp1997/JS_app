@@ -93,7 +93,7 @@
             <button class="option" id="clear_entry">CE</button>
             <button class="option" id="clear_all">C</button>
             <button class="option" id="delete_word"><=X</button>
-            <button class="option" id="plus">+</button>
+            <button class="op" id="plus">+</button>
         </div>
         <div>
             <button class="nums">7</button>
@@ -130,10 +130,8 @@
     let curNum = "";
     let operator = "";
     let result = "";
+    let toggle = true;
 
-    if(result){
-
-    }
 
     $calculator.addEventListener('click', (e)=>{
         // 숫자 버튼 클릭
@@ -164,70 +162,66 @@
 
     const clickNum = (e) => {
         //첫 숫자 입력할 때
-        if(!operator) {
-            prevNum += e.target.textContent;
-            $result.textContent += e.target.textContent;
-            return;
+        if(toggle){
+            result = "";
+            toggle = false;
         }
 
-        // 다음 숫자 입력할 때
-        if(!curNum){
-            $middleResult.textContent = prevNum;
-            $result.textContent = ''
-        }
-
-        if(result){
-            $result.textContent = ''
-        }
-        curNum += e.target.textContent;
-        $result.textContent += e.target.text;
+        result += e.target.textContent;
+        $result.textContent = result;
     }
     const clickOp = (op) => {
-        if(prevNum){
-            operator = op
-        } else {
+        if(!prevNum){
+            prevNum = result;
+            operator = op;
+            $middleResult.textContent = prevNum + operator;
+            toggle = true;
+        }else if (curNum){
+            prevNum = result;
+            curNum = "";
+            operator = op;
+            $middleResult.textContent = prevNum + operator;
+            toggle = true;
+        }
+        else {
             alert('연산할 숫자가 없습니다')
         }
     }
 
     const showResult = () => {
-        if(curNum){
+        if(prevNum){
+            curNum = result;
             switch (operator){
                 case '+':
-                    $result.textContent = String(parseInt(prevNum) + parseInt(curNum));
-                    result = $result.value;
+                    result = String(parseInt(prevNum) + parseInt(curNum));
                     break;
                 case '-':
-                    $result.textContent = String(Number(prevNum) - Number(curNum));
-                    result = $result.value;
+                    result = String(Number(prevNum) - Number(curNum));
                     break;
                 case '*':
-                    $result.textContent = String(Number(prevNum) * Number(curNum));
-                    result = $result.value;
+                    result = String(Number(prevNum) * Number(curNum));
                     break;
                 case '/':
-                    $result.textContent = String(Number(prevNum) / Number(curNum));
-                    result = $result.value;
+                    result = String(Number(prevNum) / Number(curNum));
                     break;
                 default:
                     break;
             }
+            $middleResult.textContent += curNum + '=';
+            $result.textContent = result;
         } else alert('연산이 불가능합니다')
-        prevNum = "";
-        curNum = "";
-        operator = "";
     }
 
-    const clear_data = () => {
-        prevNum = '';
-        curNum = '';
-        operator = '';
-        result = '';
-    }
-
-    const change_sign = () => {
-        curNum *= -1;
-    }
+    // const clear_data = () => {
+    //     prevNum = '';
+    //     curNum = '';
+    //     operator = '';
+    //     result = '';
+    // }
+    //
+    // const change_sign = () => {
+    //     curNum *= -1;
+    // }
 
 </script>
 </body>

@@ -1,10 +1,6 @@
 const $startScreen = document.getElementById("start-screen");
 const $gameMenu = document.getElementById("game-menu");
 const $battleMenu = document.getElementById("battle-menu");
-
-const $startButton = document.getElementById("start");
-
-const $heroState = document.getElementById("hero-stat");
 const $heroName = document.getElementById("hero-name");
 const $heroLevel = document.getElementById("hero-level");
 const $heroHP = document.getElementById("hero-hp");
